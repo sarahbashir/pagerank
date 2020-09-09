@@ -9,7 +9,6 @@ import math
 import torch
 import gzip
 import csv
-
 import logging
 
 
@@ -22,6 +21,8 @@ class WebGraph():
         Each line contains two entries: the source and target corresponding to a single web link.
         This code assumes that the file is sorted on the source column.
         '''
+
+        #testing terminal push 
 
         self.url_dict = {}
         indices = []
