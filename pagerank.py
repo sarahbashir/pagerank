@@ -21,9 +21,6 @@ class WebGraph():
         Each line contains two entries: the source and target corresponding to a single web link.
         This code assumes that the file is sorted on the source column.
         '''
-
-        #testing terminal push 
-
         self.url_dict = {}
         indices = []
 
@@ -105,7 +102,15 @@ class WebGraph():
 
         else:
             v = torch.zeros(n)
-            # FIXME: your code goes here
+            # if url satisfies query, set corresponding vector entry to 1
+            #rest are set to 0
+            #use url_satisfies_query
+            for i in range(n):
+                if url_satisfies_query(url = ????, query = ???):
+                    v[i] = 1
+                else:
+                    #do we need an else statement
+
 
         v_sum = torch.sum(v)
         assert(v_sum>0)
@@ -135,8 +140,33 @@ class WebGraph():
             x0 /= torch.norm(x0)
 
             # main loop
-            # FIXME: your code goes here
+            #create a vector of all 0s to be a
+            a = torch.zeros(n)
+
+            #if a row in P is all 0, add 1 to corresponding a dimension
+            for i in range(0,n):
+                #do someghing HELP
+
+            for k in range(0,max_iterations):
+                #implement equation 5.1
+                x1 = x0
+                x0 = torch.sparse.mm(self.P.t()),x0) * alpha + (alpha * x0.t()* a + (1-alpha)) * v.t()
+
+                #check epsilon condition
+                if abs(torch.norm(x1) - torch.norm(x0)) <= epsilon:
+                    #break??
+
+
+
+
+
+
             x = x0.squeeze()
+
+
+
+
+
 
             return x
 
