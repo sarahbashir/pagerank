@@ -105,10 +105,11 @@ class WebGraph():
             # if url satisfies query, set corresponding vector entry to 1
             #rest are set to 0
             #use url_satisfies_query
+
             for i in range(n):
-                if url_satisfies_query(url = ????, query = ???):
+                if url_satisfies_query(url = self._index_to_url(i), query = query):
                     v[i] = 1
-                else:
+                #else:
                     #do we need an else statement
 
 
@@ -143,32 +144,59 @@ class WebGraph():
             #create a vector of all 0s to be a
             a = torch.zeros(n)
 
+            row_sums = torch.sparse.sum(self.P,1)
+
             #if a row in P is all 0, add 1 to corresponding a dimension
-            for i in range(0,n):
-                #do someghing HELP
+            for i in range(n):
+                if row_sums[i] == 0:
+                    a[i] = 1
+                else:
+                    a[i] = 0
+
+            x = x0
 
             for k in range(0,max_iterations):
-                #implement equation 5.1
-                x1 = x0
-                x0 = torch.sparse.mm(self.P.t()),x0) * alpha + (alpha * x0.t()* a + (1-alpha)) * v.t()
+                x1 = x
+
+
+                #calculate x^t * alpha
+                xTransposeAlpha = x1.t() * alpha
+                scalar = a * xTransposeAlpha + (1-alpha)
+                #right side of equation 5.1
+                rhs = scalar*v.t()
+
+                print("shape of x: ",x.shape)
+                print("shape of p matrix: ",(self.P).shape)
+
+                #left side of equation 5.1
+                lhs = torch.sparse.mm(self.P.t(),xTransposeAlpha.t()).t()
+
+                #put both sides of equation together
+                x = (lhs+rhs).t()
+
+
+
+
+                #vector_to_matrix = torch.unsqueeze(alpha * x.t(),1)
+
 
                 #check epsilon condition
-                if abs(torch.norm(x1) - torch.norm(x0)) <= epsilon:
-                    #break??
+                if abs(torch.norm(x) - torch.norm(x1)) < epsilon:
+                    break
 
 
 
 
 
 
-            x = x0.squeeze()
+            #x = x0.squeeze()
 
 
 
 
 
 
-            return x
+            return x.squeeze()
 
 
     def search(self, pi, query='', max_results=10):
