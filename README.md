@@ -19,7 +19,7 @@ INFO:root:rank=5 pagerank=8.9347e-02 url=1
 
 **Part 2:**
 
-I then used the `search_query` option, which takes in a string as a paramter. I used the strings 'corona', 'trump', and 'iran', respectively.
+I then used the `--search_query` option, which takes in a string as a paramter. I used the strings 'corona', 'trump', and 'iran', respectively.
 
 ```
 $ python3 pagerank.py --data=./lawfareblog.csv.gz --search_query='corona'
@@ -90,7 +90,7 @@ INFO:root:rank=8 pagerank=1.5597e+00 url=www.lawfareblog.com/summary-david-holme
 INFO:root:rank=9 pagerank=9.1265e-01 url=www.lawfareblog.com/events
  ```
  **Part 4:**
- I run the following four commands: 
+ I ran the following four commands: 
  ```
 $ python3 pagerank.py --data=./lawfareblog.csv.gz --verbose 
 $ python3 pagerank.py --data=./lawfareblog.csv.gz --verbose --alpha=0.99999
@@ -158,5 +158,75 @@ INFO:root:rank=9 pagerank=1.0863e+00 url=www.lawfareblog.com/water-wars-sinking-
 ```
 
 
-## Task 2: the personalizagion vector
+## Task 2: the personalization vector
+
+**Part 1:**
+
+I implemented the WebGraph.make_personalization_vector function which enables the `--personalization_vector_query` command line argument. This provides an alternative method for searching by filtering by the personalization vector.
+
+I got the results:
+```
+$ python3 pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --personalization_vector_query='corona'
+INFO:root:rank=0 pagerank=8.8870e-01 url=www.lawfareblog.com/covid-19-speech-and-surveillance-response
+INFO:root:rank=1 pagerank=8.8867e-01 url=www.lawfareblog.com/lawfare-live-covid-19-speech-and-surveillance
+INFO:root:rank=2 pagerank=1.8256e-01 url=www.lawfareblog.com/chinatalk-how-party-takes-its-propaganda-global
+INFO:root:rank=3 pagerank=1.4907e-01 url=www.lawfareblog.com/brexit-not-immune-coronavirus
+INFO:root:rank=4 pagerank=1.4907e-01 url=www.lawfareblog.com/rational-security-my-corona-edition
+INFO:root:rank=5 pagerank=1.0729e-01 url=www.lawfareblog.com/trump-cant-reopen-country-over-state-objections
+INFO:root:rank=6 pagerank=1.0199e-01 url=www.lawfareblog.com/britains-coronavirus-response
+INFO:root:rank=7 pagerank=1.0199e-01 url=www.lawfareblog.com/prosecuting-purposeful-coronavirus-exposure-terrorism
+INFO:root:rank=8 pagerank=9.4298e-02 url=www.lawfareblog.com/lawfare-podcast-mom-and-dad-talk-clinical-trials-pandemic
+INFO:root:rank=9 pagerank=8.7207e-02 url=www.lawfareblog.com/house-oversight-committee-holds-day-two-hearing-government-coronavirus-response
+```
+
+These results are significantly different than when using the `--search_query` option:
+```
+$ python3 pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --search_query='corona'
+INFO:root:rank=0 pagerank=1.1602e-01 url=www.lawfareblog.com/congress-needs-coronavirus-failsafe-its-too-late
+INFO:root:rank=1 pagerank=5.6372e-02 url=www.lawfareblog.com/house-oversight-committee-holds-day-two-hearing-government-coronavirus-response
+INFO:root:rank=2 pagerank=5.0835e-02 url=www.lawfareblog.com/britains-coronavirus-response
+INFO:root:rank=3 pagerank=5.0485e-02 url=www.lawfareblog.com/prosecuting-purposeful-coronavirus-exposure-terrorism
+INFO:root:rank=4 pagerank=4.8030e-02 url=www.lawfareblog.com/livestream-house-oversight-committee-holds-hearing-government-coronavirus-response
+INFO:root:rank=5 pagerank=4.7747e-02 url=www.lawfareblog.com/paper-hearing-experts-debate-digital-contact-tracing-and-coronavirus-privacy-concerns
+INFO:root:rank=6 pagerank=4.3730e-02 url=www.lawfareblog.com/why-congress-conducting-business-usual-face-coronavirus
+INFO:root:rank=7 pagerank=2.5820e-02 url=www.lawfareblog.com/israeli-emergency-regulations-location-tracking-coronavirus-carriers
+INFO:root:rank=8 pagerank=2.5463e-02 url=www.lawfareblog.com/lawfare-podcast-united-nations-and-coronavirus-crisis
+INFO:root:rank=9 pagerank=1.9068e-02 url=www.lawfareblog.com/congressional-homeland-security-committees-seek-ways-support-state-federal-responses-coronavirus
+```
+**Part 2:**
+
+I was also able to find webpages that are related to the coronavirus but don't directly mention the coronavirus. This is also accomplishes using the `--personalization_vector_query' flag. The following query ranks all webpages by their corona importance, but removes webpages mentioning corona from the results:
+
+```
+$ python3 pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --personalization_vector_query='corona' --search_query='-corona'
+INFO:root:rank=0 pagerank=8.8870e-01 url=www.lawfareblog.com/covid-19-speech-and-surveillance-response
+INFO:root:rank=1 pagerank=8.8867e-01 url=www.lawfareblog.com/lawfare-live-covid-19-speech-and-surveillance
+INFO:root:rank=2 pagerank=1.8256e-01 url=www.lawfareblog.com/chinatalk-how-party-takes-its-propaganda-global
+INFO:root:rank=3 pagerank=1.0729e-01 url=www.lawfareblog.com/trump-cant-reopen-country-over-state-objections
+INFO:root:rank=4 pagerank=9.4298e-02 url=www.lawfareblog.com/lawfare-podcast-mom-and-dad-talk-clinical-trials-pandemic
+INFO:root:rank=5 pagerank=7.9633e-02 url=www.lawfareblog.com/fault-lines-foreign-policy-quarantined
+INFO:root:rank=6 pagerank=7.5307e-02 url=www.lawfareblog.com/limits-world-health-organization
+INFO:root:rank=7 pagerank=6.8115e-02 url=www.lawfareblog.com/chinatalk-dispatches-shanghai-beijing-and-hong-kong
+INFO:root:rank=8 pagerank=6.4847e-02 url=www.lawfareblog.com/us-moves-dismiss-case-against-company-linked-ira-troll-farm
+INFO:root:rank=9 pagerank=6.4847e-02 url=www.lawfareblog.com/livestream-house-armed-services-holds-hearing-national-security-challenges-north-and-south-america
+```
+**Part 3:**
+I then picked a different national security topic. I chose articles that are important to the `afghanistan` but do not contain the word `afghanistan`. This is especially currently relevant because the Afghan government and the Taliban just began peace talks. I ran the following:
+```
+$ python3 pagerank.py --data=./lawfareblog.csv.gz --filter_ratio=0.2 --personalization_vector_query='afghanistan' --search_query='-afghanistan'
+INFO:root:rank=0 pagerank=2.2315e-01 url=www.lawfareblog.com/trump-asks-supreme-court-stay-congressional-subpeona-tax-returns
+INFO:root:rank=1 pagerank=1.7526e-01 url=www.lawfareblog.com/depoliticizing-foreign-interference
+INFO:root:rank=2 pagerank=1.7373e-01 url=www.lawfareblog.com/trinidads-islamic-state-problem
+INFO:root:rank=3 pagerank=1.7372e-01 url=www.lawfareblog.com/fractured-terrorism-threat-america
+INFO:root:rank=4 pagerank=1.7372e-01 url=www.lawfareblog.com/chinas-advance-antarctic
+INFO:root:rank=5 pagerank=1.4596e-01 url=www.lawfareblog.com/what-macron-got-right-about-nato-europe-and-transatlantic-relationship
+INFO:root:rank=6 pagerank=1.3979e-01 url=www.lawfareblog.com/livestream-nov-21-impeachment-hearings-0
+INFO:root:rank=7 pagerank=1.3978e-01 url=www.lawfareblog.com/opening-statement-david-holmes
+INFO:root:rank=8 pagerank=1.0230e-01 url=www.lawfareblog.com/senate-examines-threats-homeland
+INFO:root:rank=9 pagerank=9.0610e-02 url=www.lawfareblog.com/livestream-house-armed-services-committee-hearing-f-35-program
+```
+
+
+
+
 
