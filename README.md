@@ -5,7 +5,7 @@ pagerank.py file now uses further developed --search_query argument. Program now
 
 Running the update file on a search for 'weapons' gives us:
 ```
-$ python3 pagerank1.py --data=lawfareblog.csv.gz --search_query='weapons'
+$ python3 pagerank.py --data=lawfareblog.csv.gz --search_query='weapons'
 INFO:gensim.models.keyedvectors:precomputing L2-norms of word weight vectors
 INFO:root:rank=0 pagerank=4.5715e-03 url=www.lawfareblog.com/why-did-you-wait-moral-emptiness-and-drone-strikes
 INFO:root:rank=1 pagerank=3.1107e-03 url=www.lawfareblog.com/dc-district-court-dismisses-journalists-drone-lawsuit
