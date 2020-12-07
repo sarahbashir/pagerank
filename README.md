@@ -1,5 +1,25 @@
 # Using Pagerank to create a search engine for lawfareblog.com
 
+## Update:
+pagerank.py file now uses further developed --search_query argument. Program now uses the gensim glove-twitter-25 model to identify the top 5 most similar words.
+
+Running the update file on a search for 'weapons' gives us:
+```$ python3 pagerank1.py --data=lawfareblog.csv.gz --search_query='weapons'
+INFO:gensim.models.keyedvectors:precomputing L2-norms of word weight vectors
+INFO:root:rank=0 pagerank=4.5715e-03 url=www.lawfareblog.com/why-did-you-wait-moral-emptiness-and-drone-strikes
+INFO:root:rank=1 pagerank=3.1107e-03 url=www.lawfareblog.com/dc-district-court-dismisses-journalists-drone-lawsuit
+INFO:root:rank=2 pagerank=2.0231e-03 url=www.lawfareblog.com/revived-cia-drone-strike-program-comments-new-policy
+INFO:root:rank=3 pagerank=1.9667e-03 url=www.lawfareblog.com/us-court-appeals-dc-circuit-dismisses-suit-over-us-drone-strike
+INFO:root:rank=4 pagerank=1.1788e-03 url=www.lawfareblog.com/iran-shoots-down-us-drone-domestic-and-international-legal-implications
+INFO:root:rank=5 pagerank=1.1620e-03 url=www.lawfareblog.com/slaughterbots-and-other-anticipated-autonomous-weapons-problems
+INFO:root:rank=6 pagerank=1.1276e-03 url=www.lawfareblog.com/german-courts-weigh-legal-responsibility-us-drone-strikes
+INFO:root:rank=7 pagerank=8.3738e-04 url=www.lawfareblog.com/shift-jsoc-drone-strikes-does-not-mean-cia-has-been-sidelined
+INFO:root:rank=8 pagerank=7.8704e-04 url=www.lawfareblog.com/atomwaffen-division-member-pleads-guilty-firearms-charge
+INFO:root:rank=9 pagerank=7.8570e-04 url=www.lawfareblog.com/waiving-imminent-threat-test-cia-drone-strikes-pakistan
+```
+
+
+
 ## Task 1: the power method
 
 I implemented the `WebGraph.power_method` function in` pagerank.py` to compute the pagerank vector.
